@@ -43,33 +43,29 @@
 → 프론트엔드에 응답 반환
 ```
 
-[사용자 요청]
-    ↓
-[React Chat UI]
-    ↓
-[Node.js Backend]
-    ↓
-[LLM Tool Selector]
-    ↓
-[선택된 Tool 실행]
-    ├─ FAQ Tool
-    │   └─ faq.db 조회
-    │
-    ├─ Product Tool
-    │   └─ products 테이블 조회
-    │
-    ├─ Review Search Tool
-    │   └─ reviews 테이블 키워드 검색
-    │
-    └─ Body Review Tool
-        └─ 키/몸무게 기반 유사 체형 리뷰 검색
-    ↓
-[Tool Result]
-    ↓
-[LLM Final Answer Generator]
-    ↓
-[Frontend Response]
+## 현재 Agent Pipeline
 
+```mermaid
+flowchart LR
+    User[사용자 요청] --> UI[React Chat UI]
+    UI --> Backend[Node.js Backend]
+    Backend --> Selector[LLM Tool Selector]
+
+    Selector --> Tool{Tool 선택}
+
+    Tool --> FAQ[FAQ Tool<br/>faq.db 조회]
+    Tool --> Product[Product Tool<br/>products 테이블 조회]
+    Tool --> Review[Review Search Tool<br/>reviews 테이블 키워드 검색]
+    Tool --> Body[Body Review Tool<br/>키/몸무게 기반 유사 체형 리뷰 검색]
+
+    FAQ --> Result[Tool Result]
+    Product --> Result
+    Review --> Result
+    Body --> Result
+
+    Result --> Answer[LLM Final Answer Generator]
+    Answer --> Front[Frontend Response]
+```
 ---
 
 ## 4. 데이터 수집 방식
