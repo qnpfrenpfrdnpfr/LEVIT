@@ -256,57 +256,37 @@ Body Review Tool은 사용자의 키와 몸무게를 기반으로 유사한 체�
 향후에는 현재의 상담형 Agent를 실제 쇼핑 비서에 가까운 형태로 확장할 수 있습니다.  
 사용자의 요청을 LLM이 분석하고, 필요한 Tool을 선택하여 데이터를 조회하거나 실제 행동을 수행하는 구조입니다.
 
+## 고도화된 Agent Pipeline
+
 ```mermaid
 flowchart TD
-    A[사용자] --> B[React Chat UI]
-    B --> C[Node.js Backend<br/>Agent Orchestrator]
-    C --> D[LLM Tool Selector]
+    User[사용자] --> UI[React Chat UI]
+    UI --> Backend[Node.js Backend<br/>Agent Orchestrator]
+    Backend --> Selector[LLM Tool Selector]
 
-    D --> E{선택된 Tool 실행}
+    Selector --> Tool{Tool 선택}
 
-    E --> F[FAQ Tool]
-    F --> F1[faq.db 조회]
+    Tool --> FAQ[FAQ Tool<br/>faq.db 조회]
+    Tool --> Product[Product Tool<br/>상품 DB 조회]
+    Tool --> Review[Review Tool<br/>리뷰 DB 조회]
+    Tool --> Body[Body Review Tool<br/>유사 체형 후기 조회]
+    Tool --> Web[Web Search Tool<br/>최신 상품 검색]
+    Tool --> Order[Order Tool<br/>주문 생성 / 주문 페이지 이동]
+    Tool --> Return[Return Tool<br/>반품 신청 / 반품 페이지 이동]
+    Tool --> Refund[Refund Tool<br/>환불 신청 / 환불 페이지 이동]
 
-    E --> G[Product Tool]
-    G --> G1[상품 DB / 크롤링 상품 조회]
+    FAQ --> Result[Tool Result]
+    Product --> Result
+    Review --> Result
+    Body --> Result
+    Web --> Result
+    Order --> Result
+    Return --> Result
+    Refund --> Result
 
-    E --> H[Review Tool]
-    H --> H1[fashion_reviews.db 조회]
-
-    E --> I[Body Review Tool]
-    I --> I1[키/몸무게 기반<br/>유사 체형 후기 조회]
-
-    E --> J[Web Search Tool]
-    J --> J1[최신 상품 / 트렌드 검색]
-
-    E --> K[Order Tool]
-    K --> K1[주문 생성<br/>또는 주문 페이지 이동]
-
-    E --> L[Return Tool]
-    L --> L1[반품 신청<br/>또는 반품 페이지 이동]
-
-    E --> M[Refund Tool]
-    M --> M1[환불 신청<br/>또는 환불 페이지 이동]
-
-    F1 --> N[Tool Result]
-    G1 --> N
-    H1 --> N
-    I1 --> N
-    J1 --> N
-    K1 --> N
-    L1 --> N
-    M1 --> N
-
-    N --> O[LLM Final Answer Generator]
-    O --> P[Memory 저장]
-
-    P --> P1[대화 이력]
-    P --> P2[선호 스타일]
-    P --> P3[체형 정보]
-    P --> P4[자주 찾는 사이즈]
-    P --> P5[최근 관심 상품]
-
-    P --> Q[사용자 응답]
+    Result --> Answer[LLM Final Answer Generator]
+    Answer --> Memory[Memory 저장<br/>대화 이력 / 선호 스타일 / 체형 정보 / 관심 상품]
+    Memory --> Response[사용자 응답]
 ```
 
 **질문 예시**
