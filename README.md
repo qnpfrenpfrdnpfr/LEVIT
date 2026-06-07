@@ -255,56 +255,69 @@ Body Review Tool은 사용자의 키와 몸무게를 기반으로 유사한 체�
 
 ## 고도화 방향
 
-[사용자]
-  ↓
-[React Chat UI]
-  ↓
-[Node.js Backend / Agent Orchestrator]
-  ↓
-[LLM Tool Selector]
-  ↓
-선택된 Tool 실행
-  ├─ FAQ Tool
-  │   └─ faq.db 조회
-  │
-  ├─ Product Tool
-  │   └─ 상품 DB / 크롤링 상품 조회
-  │
-  ├─ Review Tool
-  │   └─ fashion_reviews.db 조회
-  │
-  ├─ Body Review Tool
-  │   └─ 키/몸무게 기반 유사 체형 후기 조회
-  │
-  ├─ Web Search Tool
-  │   └─ 최신 상품/트렌드 검색
-  │
-  ├─ Order Tool
-  │   └─ 주문 생성 또는 주문 페이지 이동
-  │
-  ├─ Return Tool
-  │   └─ 반품 신청 또는 반품 페이지 이동
-  │
-  └─ Refund Tool
-      └─ 환불 신청 또는 환불 페이지 이동
-  ↓
-[Tool Result]
-  ↓
-[LLM Final Answer Generator]
-  ↓
-[Memory 저장]
-  ├─ 대화 이력
-  ├─ 선호 스타일
-  ├─ 체형 정보
-  ├─ 자주 찾는 사이즈
-  └─ 최근 관심 상품
-  ↓
-[사용자 응답]
+## 고도화된 Agent 설계
+
+향후에는 현재의 상담형 Agent를 실제 쇼핑 비서에 가까운 형태로 확장할 수 있습니다.  
+사용자의 요청을 LLM이 분석하고, 필요한 Tool을 선택하여 데이터를 조회하거나 실제 행동을 수행하는 구조입니다.
+
+```mermaid
+flowchart TD
+    A[사용자] --> B[React Chat UI]
+    B --> C[Node.js Backend<br/>Agent Orchestrator]
+    C --> D[LLM Tool Selector]
+
+    D --> E{선택된 Tool 실행}
+
+    E --> F[FAQ Tool]
+    F --> F1[faq.db 조회]
+
+    E --> G[Product Tool]
+    G --> G1[상품 DB / 크롤링 상품 조회]
+
+    E --> H[Review Tool]
+    H --> H1[fashion_reviews.db 조회]
+
+    E --> I[Body Review Tool]
+    I --> I1[키/몸무게 기반<br/>유사 체형 후기 조회]
+
+    E --> J[Web Search Tool]
+    J --> J1[최신 상품 / 트렌드 검색]
+
+    E --> K[Order Tool]
+    K --> K1[주문 생성<br/>또는 주문 페이지 이동]
+
+    E --> L[Return Tool]
+    L --> L1[반품 신청<br/>또는 반품 페이지 이동]
+
+    E --> M[Refund Tool]
+    M --> M1[환불 신청<br/>또는 환불 페이지 이동]
+
+    F1 --> N[Tool Result]
+    G1 --> N
+    H1 --> N
+    I1 --> N
+    J1 --> N
+    K1 --> N
+    L1 --> N
+    M1 --> N
+
+    N --> O[LLM Final Answer Generator]
+    O --> P[Memory 저장]
+
+    P --> P1[대화 이력]
+    P --> P2[선호 스타일]
+    P --> P3[체형 정보]
+    P --> P4[자주 찾는 사이즈]
+    P --> P5[최근 관심 상품]
+
+    P --> Q[사용자 응답]
+```
 
 **질문 예시**
 
 사용자 질문: 반품해줘
 
+```text
 사용자 요청
 → LLM이 반품 요청으로 분류
 → 주문 정보 확인
@@ -312,3 +325,4 @@ Body Review Tool은 사용자의 키와 몸무게를 기반으로 유사한 체�
 → FAQ Tool로 반품 정책 확인
 → 사용자에게 반품 사유 확인
 → 최종 확인 후 반품 신청 또는 반품 페이지 이동
+```
