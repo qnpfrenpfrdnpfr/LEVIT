@@ -7,10 +7,20 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const envOrigins = [
+  process.env.CLIENT_URL,
+  process.env.CLIENT_URLS,
+]
+  .filter(Boolean)
+  .flatMap((value) => value.split(","))
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 const allowedOrigins = [
-  process.env.CLIENT_URL || "http://localhost:5173",
+  ...envOrigins,
   "http://localhost:5173",
   "http://127.0.0.1:5173",
+  "https://levit-iota.vercel.app",
 ];
 
 app.use(
