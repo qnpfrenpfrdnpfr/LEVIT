@@ -1,0 +1,16 @@
+[
+  {
+    "product_code": "QNT-001",
+    "product_name": "여성 린넨 셔츠",
+    "brand": "Queenit",
+    "price": 39000,
+    "url": "https://queenit.example.com/products/QNT-001"
+  },
+  {
+    "product_code": "QNT-002",
+    "product_name": "여성 와이드 팬츠",
+    "brand": "Queenit",
+    "price": 45000,
+    "url": "https://queenit.example.com/products/QNT-002"
+  }
+]
